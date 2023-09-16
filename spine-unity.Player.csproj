@@ -10,7 +10,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{63D0D10E-94C2-AD51-4816-DAF5D4EF4029}</ProjectGuid>
+    <ProjectGuid>{5FD442EE-6F50-7D8D-4265-053D8F400270}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>spine-unity</AssemblyName>

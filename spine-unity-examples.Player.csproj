@@ -10,7 +10,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{D643C2E4-83EB-2546-932E-E2748FDA9639}</ProjectGuid>
+    <ProjectGuid>{36F2E055-C636-22F6-2C1E-74E3264FF87C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>spine-unity-examples</AssemblyName>
@@ -738,7 +738,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="spine-unity.Player.csproj">
-      <Project>{63D0D10E-94C2-AD51-4816-DAF5D4EF4029}</Project>
+      <Project>{5FD442EE-6F50-7D8D-4265-053D8F400270}</Project>
       <Name>spine-unity.Player</Name>
     </ProjectReference>
   </ItemGroup>

@@ -17,9 +17,9 @@ public class Card : ScriptableObject
     public CardClass cardClass;*/
 
     public enum CardTargetType { self, enemy}
-    public CardData cardCost;
-    public CardData cardEffect;
-    public CardData buffAmount;
+    public CardData cardCost; //Cost the bai
+    public CardData cardEffect; // gia tri def, atk
+    public CardData buffAmount; // gia tri buff/debuff
     public CardDescription cardDescription;
 
     public int GetCardValue()
@@ -38,6 +38,14 @@ public class Card : ScriptableObject
             return cardEffect.baseData;
         }
         return cardEffect.upgradeData;
+    }
+    public int GetBuffAmount()
+    {
+        if (!isUpgrade)
+        {
+            return buffAmount.baseData;
+        }
+        return buffAmount.upgradeData;
     }
 
     public string GetCardDecription()

@@ -381,6 +381,8 @@
 "Assets/CaptainCatSparrow/SpellIconsVolume_2/Scripts/Demo.cs"
 "Assets/ScriptableObjects/Card.cs"
 "Assets/Scripts/BattleMangager.cs"
+"Assets/Scripts/Buff.cs"
+"Assets/Scripts/BuffUI.cs"
 "Assets/Scripts/CardAction.cs"
 "Assets/Scripts/CardUIManager.cs"
 "Assets/Scripts/GameManager.cs"

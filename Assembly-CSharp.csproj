@@ -10,7 +10,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{0EEBF18E-272D-828E-0FE3-FE5D1E52DE1C}</ProjectGuid>
+    <ProjectGuid>{BC3E281F-463F-0BF0-0BDA-A95C0C7D6928}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -66,7 +66,9 @@
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\CardUIManager.cs" />
     <Compile Include="Assets\CaptainCatSparrow\SpellIconsVolume_2\Scripts\Demo.cs" />
+    <Compile Include="Assets\Scripts\Buff.cs" />
     <Compile Include="Assets\Scripts\ListExtension.cs" />
+    <Compile Include="Assets\Scripts\BuffUI.cs" />
     <Compile Include="Assets\Scripts\BattleMangager.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -852,19 +854,19 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="spine-unity-examples.csproj">
-      <Project>{6E458EE7-36BD-75A4-7716-C6B015CD4AC9}</Project>
+      <Project>{F014CBEF-143C-A19E-7E55-30B9C4337C3C}</Project>
       <Name>spine-unity-examples</Name>
     </ProjectReference>
     <ProjectReference Include="spine-unity-examples-editor.csproj">
-      <Project>{900B6C12-5121-33BF-2941-505475DD75AD}</Project>
+      <Project>{EC095930-6003-121D-60B2-FCFB3BE33D03}</Project>
       <Name>spine-unity-examples-editor</Name>
     </ProjectReference>
     <ProjectReference Include="spine-unity.csproj">
-      <Project>{75BA20E0-6885-9503-1A70-5AA0108C75C9}</Project>
+      <Project>{423D7816-4811-236A-C58E-669F52CE211F}</Project>
       <Name>spine-unity</Name>
     </ProjectReference>
     <ProjectReference Include="spine-unity-editor.csproj">
-      <Project>{961D0058-26AE-BEC6-D53F-EFD1DF5564EF}</Project>
+      <Project>{6CDE3FFD-630F-BFEB-A665-4636A2C9A834}</Project>
       <Name>spine-unity-editor</Name>
     </ProjectReference>
   </ItemGroup>

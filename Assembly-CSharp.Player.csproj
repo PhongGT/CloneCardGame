@@ -10,7 +10,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{A859C545-B33A-3FFB-D8B9-8C460A384C95}</ProjectGuid>
+    <ProjectGuid>{8F476342-C485-AD69-7D56-5D11F444B416}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -66,7 +66,9 @@
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\CardUIManager.cs" />
     <Compile Include="Assets\CaptainCatSparrow\SpellIconsVolume_2\Scripts\Demo.cs" />
+    <Compile Include="Assets\Scripts\Buff.cs" />
     <Compile Include="Assets\Scripts\ListExtension.cs" />
+    <Compile Include="Assets\Scripts\BuffUI.cs" />
     <Compile Include="Assets\Scripts\BattleMangager.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -720,11 +722,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="spine-unity-examples.Player.csproj">
-      <Project>{D643C2E4-83EB-2546-932E-E2748FDA9639}</Project>
+      <Project>{36F2E055-C636-22F6-2C1E-74E3264FF87C}</Project>
       <Name>spine-unity-examples.Player</Name>
     </ProjectReference>
     <ProjectReference Include="spine-unity.Player.csproj">
-      <Project>{63D0D10E-94C2-AD51-4816-DAF5D4EF4029}</Project>
+      <Project>{5FD442EE-6F50-7D8D-4265-053D8F400270}</Project>
       <Name>spine-unity.Player</Name>
     </ProjectReference>
   </ItemGroup>

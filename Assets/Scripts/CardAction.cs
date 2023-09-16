@@ -7,6 +7,7 @@ public class CardAction : MonoBehaviour
     public PlayerManager player;
     public PlayerManager target;
     Card card;
+    Buff buff;
     BattleMangager battleMangager;
 
     private void Awake()
@@ -18,6 +19,24 @@ public class CardAction : MonoBehaviour
     {
         card = _card;
         target = _target;
+
+        switch (card.cardTitile)
+        {
+            case "Strike":
+                Attack();
+                break;
+            case "Block":
+                Defence(); 
+                break;
+            case "Poision Stab":
+                Attack();
+                ApplyBuff(Buff.Type.poision);
+                break;
+
+            default:
+                Debug.Log("Smell Fishy Here!!");
+                break;
+        }
 
 
     }
@@ -35,13 +54,15 @@ public class CardAction : MonoBehaviour
         player.AddBlock(block);
     }
 
-    public void AddBuff()
+    public void AddBuff(Buff.Type _typebuff)
     {
+        player.AddBuff(_typebuff, card.GetBuffAmount());
+
 
     }
-
-    public void AddDebuff()
+    public void ApplyBuff(Buff.Type _typebuff)
     {
-
+        target.AddBuff(_typebuff, card.GetBuffAmount());
     }
+
 }
