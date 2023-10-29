@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CardAction : MonoBehaviour
 {
-    public PlayerManager player;
-    public PlayerManager target;
+    public Fighter player;
+    public Fighter target;
     Card card;
     Buff buff;
     BattleMangager battleMangager;
@@ -15,7 +15,7 @@ public class CardAction : MonoBehaviour
         battleMangager = FindObjectOfType<BattleMangager>();
     }
 
-    public void ActionCard(Card _card, PlayerManager _target)
+    public void PerformAction(Card _card, Fighter _target)
     {
         card = _card;
         target = _target;

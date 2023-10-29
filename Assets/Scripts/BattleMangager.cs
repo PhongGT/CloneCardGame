@@ -22,10 +22,11 @@ public class BattleMangager : MonoBehaviour
     public int drawAmount;
     public Turn turn;
     public enum Turn {Player, Enemy }
-    
 
 
+    public Fighter cardTarget;
     public GameManager gameManager;
+    CardAction cardAction;
 
 
     public void Awake()
@@ -85,6 +86,13 @@ public class BattleMangager : MonoBehaviour
         DisplayCard(card);
         spreadAngle = maxSpreadAngle;
         /*SpreadCards();*/
+    }
+    public void PlayCard(CardUIManager cardUI)
+    {
+        cardAction.PerformAction(cardUI._card, cardTarget);
+        energy -= cardUI._card.GetCardValue();
+
+
     }
 
 /*    public void SpreadCards() // must fix here

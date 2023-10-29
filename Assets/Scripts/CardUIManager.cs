@@ -19,16 +19,8 @@ public class CardUIManager : MonoBehaviour
     {
         battleMangager = FindObjectOfType<BattleMangager>();
     }
-    void Start()
-    {
-        LoadCard(_card); 
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
     public void LoadCard(Card card)
     {
         _card = card;
@@ -67,11 +59,14 @@ public class CardUIManager : MonoBehaviour
     {
         battleMangager.selectedCard = this;
         Debug.Log(this.cardDescription.text);
+        
+        
     }
     public void DeSelectedCard()
     {
         battleMangager.selectedCard = null;
         Debug.Log(this.cardDescription.text + " Null");
+        
     }
     // Must make a custom Hand Holder to make this work
     public void HoverCard()
@@ -79,6 +74,10 @@ public class CardUIManager : MonoBehaviour
 
     }
     public void DropCard()
+    {
+
+    }
+    private void EndOfDragging()
     {
 
     }

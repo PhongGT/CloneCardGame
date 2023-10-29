@@ -62,7 +62,7 @@
     <Compile Include="Assets\ScriptableObjects\Card.cs" />
     <Compile Include="Assets\Scripts\CardAction.cs" />
     <Compile Include="Assets\Scripts\HealthBarUI.cs" />
-    <Compile Include="Assets\Scripts\PlayerManager.cs" />
+    <Compile Include="Assets\Scripts\Fighter.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\CardUIManager.cs" />
     <Compile Include="Assets\CaptainCatSparrow\SpellIconsVolume_2\Scripts\Demo.cs" />

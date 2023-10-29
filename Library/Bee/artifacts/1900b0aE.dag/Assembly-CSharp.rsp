@@ -385,10 +385,10 @@
 "Assets/Scripts/BuffUI.cs"
 "Assets/Scripts/CardAction.cs"
 "Assets/Scripts/CardUIManager.cs"
+"Assets/Scripts/Fighter.cs"
 "Assets/Scripts/GameManager.cs"
 "Assets/Scripts/HealthBarUI.cs"
 "Assets/Scripts/ListExtension.cs"
-"Assets/Scripts/PlayerManager.cs"
 -langversion:9.0
 
 /deterministic
