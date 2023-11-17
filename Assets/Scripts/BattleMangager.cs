@@ -91,8 +91,6 @@ public class BattleMangager : MonoBehaviour
     {
         cardAction.PerformAction(cardUI._card, cardTarget);
         energy -= cardUI._card.GetCardValue();
-
-
     }
 
 /*    public void SpreadCards() // must fix here

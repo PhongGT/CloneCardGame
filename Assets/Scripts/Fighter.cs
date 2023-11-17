@@ -34,14 +34,7 @@ public class Fighter : MonoBehaviour
     public Transform buffParent;
 
 
-
-
     /*[Header("Buffs")]*/
-
-
-
-
-
 
     private void Awake()
     {

@@ -73,7 +73,7 @@ public class CardUIManager : MonoBehaviour
     {
 
     }
-    public void DropCard()
+    public void HandleEndDragCard()
     {
 
     }
