@@ -14,10 +14,17 @@ public class CardTarget : MonoBehaviour
 
     public void SelectTarget()
     {
-        if(battleMangager.selectedCard != null && battleMangager.selectedCard != null) {
-
-            battleMangager.cardTarget = enemyFighter;
+        Debug.Log("Click target");
+        if(enemyFighter == null)
+        {
+            battleMangager = FindObjectOfType<BattleMangager>();
+            enemyFighter = GetComponent<Fighter>();
         }
+            
+        if(battleMangager.selectedCard != null ) {
+
+            
+        }battleMangager.cardTarget = enemyFighter;
     }
     public void DeSelectedTarget()
     {

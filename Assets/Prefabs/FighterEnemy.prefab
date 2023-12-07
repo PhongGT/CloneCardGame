@@ -637,7 +637,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 8135126561402262388}
   m_FillRect: {fileID: 5428594583072786203}
   m_HandleRect: {fileID: 0}
@@ -677,6 +677,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5136095644394186089}
   - component: {fileID: 4990242659905873126}
+  - component: {fileID: 3595153367220610794}
   m_Layer: 5
   m_Name: FighterEnemy
   m_TagString: Untagged
@@ -700,7 +701,7 @@ RectTransform:
   - {fileID: 4149923191681550472}
   - {fileID: 5898455192781473995}
   m_Father: {fileID: 0}
-  m_RootOrder: -2
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -779,6 +780,18 @@ MonoBehaviour:
     isPermernent: 1
   buffPrefab: {fileID: 361437020366698241, guid: 050088c6ef463b54c96f460fbadaf52c, type: 3}
   buffParent: {fileID: 5898455192781473995}
+--- !u!114 &3595153367220610794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7532684363385065964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02518ff40f86a9045b24706afca432cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8494312147376552324
 GameObject:
   m_ObjectHideFlags: 0

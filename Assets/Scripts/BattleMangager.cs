@@ -89,8 +89,19 @@ public class BattleMangager : MonoBehaviour
     }
     public void PlayCard(CardUIManager cardUI)
     {
+        
+        //Play
         cardAction.PerformAction(cardUI._card, cardTarget);
+        
+        //Energy
         energy -= cardUI._card.GetCardValue();
+        
+        //Discard
+        selectedCard = null;
+        cardUI.gameObject.SetActive(false);
+        cardsInHand.Remove(cardUI._card);
+        DiscardCard(cardUI._card);
+
     }
 
 /*    public void SpreadCards() // must fix here

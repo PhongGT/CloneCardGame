@@ -71,11 +71,31 @@ public class CardUIManager : MonoBehaviour
     // Must make a custom Hand Holder to make this work
     public void HoverCard()
     {
-
+        if(battleMangager.selectedCard == null)
+        {
+            //hover animation
+        }
     }
     public void HandleEndDragCard()
     {
-
+        if(battleMangager.energy < _card.GetCardValue())
+        {
+            return;
+        }
+        if(_card.cardType == Card.CardType.Attack && battleMangager.cardTarget == null)
+        {
+            return;
+        }
+        if( _card.cardType == Card.CardType.Attack)
+        {
+            battleMangager.PlayCard(this);
+            //animation
+        }
+        if( _card.cardType != Card.CardType.Attack)
+        {
+            //animation
+            battleMangager.PlayCard(this);
+        }
     }
     private void EndOfDragging()
     {
