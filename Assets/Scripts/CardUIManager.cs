@@ -13,11 +13,11 @@ public class CardUIManager : MonoBehaviour
     [SerializeField] TMP_Text cardCost;
     [SerializeField] TMP_Text cardType;
 
-    BattleMangager battleMangager;
+    BattleManager BattleManager;
 
     private void Awake()
     {
-        battleMangager = FindObjectOfType<BattleMangager>();
+        BattleManager = FindObjectOfType<BattleManager>();
     }
 
 
@@ -57,44 +57,44 @@ public class CardUIManager : MonoBehaviour
     }
     public void SelectedCard()
     {
-        battleMangager.selectedCard = this;
+        BattleManager.selectedCard = this;
         Debug.Log(this.cardDescription.text);
         
         
     }
     public void DeSelectedCard()
     {
-        battleMangager.selectedCard = null;
+        BattleManager.selectedCard = null;
         Debug.Log(this.cardDescription.text + " Null");
         
     }
     // Must make a custom Hand Holder to make this work
     public void HoverCard()
     {
-        if(battleMangager.selectedCard == null)
+        if(BattleManager.selectedCard == null)
         {
             //hover animation
         }
     }
     public void HandleEndDragCard()
     {
-        if(battleMangager.energy < _card.GetCardValue())
+        if(BattleManager.energy < _card.GetCardValue())
         {
             return;
         }
-        if(_card.cardType == Card.CardType.Attack && battleMangager.cardTarget == null)
+        if(_card.cardType == Card.CardType.Attack && BattleManager.cardTarget == null)
         {
             return;
         }
         if( _card.cardType == Card.CardType.Attack)
         {
-            battleMangager.PlayCard(this);
+            BattleManager.PlayCard(this);
             //animation
         }
         if( _card.cardType != Card.CardType.Attack)
         {
             //animation
-            battleMangager.PlayCard(this);
+            BattleManager.PlayCard(this);
         }
     }
     private void EndOfDragging()

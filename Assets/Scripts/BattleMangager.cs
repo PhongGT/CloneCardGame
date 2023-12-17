@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleMangager : MonoBehaviour
+public class BattleManager : MonoBehaviour
 {
     [Header("CardUI")]
     public List<Card> deck;
@@ -25,6 +25,7 @@ public class BattleMangager : MonoBehaviour
 
 
     public Fighter cardTarget;
+    public Fighter player;
     public GameManager gameManager;
     CardAction cardAction;
 

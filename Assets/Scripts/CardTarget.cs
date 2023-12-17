@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CardTarget : MonoBehaviour
 {
-    BattleMangager battleMangager;
+    BattleManager BattleManager;
     Fighter enemyFighter;
     private void Awake()
     {
-        battleMangager = FindObjectOfType<BattleMangager>();
+        BattleManager = FindObjectOfType<BattleManager>();
         enemyFighter = GetComponent<Fighter>();
     }
 
@@ -17,18 +17,18 @@ public class CardTarget : MonoBehaviour
         Debug.Log("Click target");
         if(enemyFighter == null)
         {
-            battleMangager = FindObjectOfType<BattleMangager>();
+            BattleManager = FindObjectOfType<BattleManager>();
             enemyFighter = GetComponent<Fighter>();
         }
             
-        if(battleMangager.selectedCard != null ) {
+        if(BattleManager.selectedCard != null ) {
 
             
-        }battleMangager.cardTarget = enemyFighter;
+        }BattleManager.cardTarget = enemyFighter;
     }
     public void DeSelectedTarget()
     {
-        battleMangager.cardTarget = null;
+        BattleManager.cardTarget = null;
         //Deselected Target
 
     }

@@ -17,7 +17,7 @@ public class Fighter : MonoBehaviour
     public bool isPlayer;
 
     [Header("Manager")]
-    public BattleMangager battleMangager;
+    public BattleManager BattleManager;
     public GameManager gameManager;
 
     [Header("Buff")]
@@ -28,7 +28,7 @@ public class Fighter : MonoBehaviour
     public Buff weak;
     public Buff poision;
     public Buff erage;
-    public Buff strenghth;
+    public Buff strength;
     public Buff dexterity;
     public GameObject buffPrefab;
     public Transform buffParent;
@@ -38,7 +38,7 @@ public class Fighter : MonoBehaviour
 
     private void Awake()
     {
-        battleMangager = FindObjectOfType<BattleMangager>();
+        BattleManager = FindObjectOfType<BattleManager>();
         gameManager = FindObjectOfType<GameManager>();
         currentHealth = maxHealth;
         healthBarUI.healthBar.maxValue = maxHealth;
@@ -143,7 +143,7 @@ public class Fighter : MonoBehaviour
                     };
                 case Buff.Type.strength:
                     {
-                        buffs.Add(strenghth);
+                        buffs.Add(strength);
                         buffs.Last().AddBuffValue(amount);
                         return;
                     };

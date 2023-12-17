@@ -8,11 +8,11 @@ public class CardAction : MonoBehaviour
     public Fighter target;
     Card card;
     Buff buff;
-    BattleMangager battleMangager;
+    BattleManager BattleManager;
 
     private void Awake()
     {
-        battleMangager = FindObjectOfType<BattleMangager>();
+        BattleManager = FindObjectOfType<BattleManager>();
     }
 
     public void PerformAction(Card _card, Fighter _target)
