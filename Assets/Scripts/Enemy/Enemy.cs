@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -19,17 +20,26 @@ public class Enemy : MonoBehaviour
     [Header("Specifics")]
     public int goldDrop;
     public bool isBoss;
-    public BattleManager BattleManager;
 
-    Fighter player;
+    public bool flyingEye;
+    public bool demonSlime;
+    public bool mushroom;
+    public BattleManager BattleManager;
+    public bool midTurn;
+
+    public Animator animator;
+    public Fighter player;
 
     //Animator
-
+    private void Awake() {
+        thisEnemy = GetComponent<Fighter>();
+    }
     private void Start()
     {
         BattleManager = FindObjectOfType<BattleManager>();
         player = BattleManager.player;
-        thisEnemy = GetComponent<Fighter>();
+        
+        
         //animator = GetComponent<Animator>();
 
         if (shuffleActions)
@@ -56,27 +66,38 @@ public class Enemy : MonoBehaviour
                 turns.Add(ea);
             }
         }
+        turns.Shuffle();
     }
     public void TakeTurn()
     {
+        Debug.Log("Enemy Take Turn!");
+        if(thisEnemy.stun.buffValue > 0)
+        {
+            return;
+        }
         //Animator
         switch (turns[turnNumber].intentType)
         {
             case EnemyAction.IntentType.Attack:
                 StartCoroutine(Attack());
+                WarpUpTurn();
                 break;
             case EnemyAction.IntentType.Block:
                 Block();
+                WarpUpTurn();
                 break;
             case EnemyAction.IntentType.StrategicBuff:
                 ApplyBuffToSelf();
+                WarpUpTurn();
                 break;
             case EnemyAction.IntentType.StrategicDebuff:
                 ApplyBuffToPlayer();
+                WarpUpTurn();
                 break;
             case EnemyAction.IntentType.AttackDebuff:
                 StartCoroutine(Attack());
                 ApplyBuffToPlayer();
+                WarpUpTurn();
                 break;
             case EnemyAction.IntentType.AddCurseCard:
                 //New Feature
@@ -117,27 +138,48 @@ public class Enemy : MonoBehaviour
     public IEnumerator Attack()
     {
         // Animation
-
-
+        
         //Attack
+        float round = 0;
         int totalDamage = turns[turnNumber].amount + thisEnemy.strength.buffValue;
         if (player.vulnerable.buffValue > 0)
         {
-            float round = totalDamage * 1.5f;
+            round = totalDamage * 1.5f;
             totalDamage = (int)round;
         }
-        yield return new WaitForSeconds(0.5f);
-        for (int i = 0; i < turns[turnNumber].number_of_hit; i++)
+        if(thisEnemy.weak.buffValue > 0)
         {
-            player.TakeDamage(totalDamage);
-            yield return new WaitForSeconds(0.5f);
+            round = totalDamage * 0.75f;
+            totalDamage = (int)round;
         }
-        WarpUpTurn();
+        
+        for (int i = 0; i < turns[turnNumber].number_of_hit; i++)
+        {   animator.Play("Attack");
+            Debug.Log("Enemy hit: " + totalDamage);
+            player.TakeDamage(totalDamage);
+        }
+        yield return new WaitForSeconds(0.4f);
+        animator.Play("Idle");
     }
 
     public void WarpUpTurn()
     {
-        // Manage Special turn for each enemy
+        // Manage Special turn for each enemy and Endturn manage
+        turnNumber++;
+        if(turnNumber == turns.Count)
+        {
+            turnNumber = 0;
+        }
+        if(demonSlime && turnNumber == 0)
+        {
+            turnNumber = 1;
+        }
+        if(mushroom && turnNumber == 0)
+        {
+            turnNumber = 1;
+        }
+        thisEnemy.UpdateAtTurnStart();
+        midTurn = false;
     }
     public void DisplayIntentAttack()
     {

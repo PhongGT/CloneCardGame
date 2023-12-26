@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+[System.Serializable]
+public class EnemyAction 
 
-public class EnemyAction : ScriptableObject
 {
 	public IntentType intentType;
     //StrategicBuff/Debuff only do 1 per game

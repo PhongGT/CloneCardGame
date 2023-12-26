@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
 {
@@ -15,6 +17,11 @@ public class BattleManager : MonoBehaviour
     public float maxSpreadAngle = 30f;
     private float spreadAngle;
     public GameObject Hand;
+    [Header("UI")]
+    public Button endTurn;
+    public TMP_Text drawPileCount;
+    public TMP_Text discardPileCount;
+    
 
     [Header("BattleStats")]
     public int maxEnergy;
@@ -23,7 +30,15 @@ public class BattleManager : MonoBehaviour
     public Turn turn;
     public enum Turn {Player, Enemy }
 
+    [Header("Enemy")]
+    
+    public List<Enemy> enemies = new List<Enemy>();
+    public List<Fighter> enemyFighters = new List<Fighter>();
 
+    public GameObject[] posibleEnemies;
+    public GameObject[] possibleElites;
+    public GameObject[] possibleBosses;
+    bool isElite;
     public Fighter cardTarget;
     public Fighter player;
     public GameManager gameManager;
@@ -33,6 +48,7 @@ public class BattleManager : MonoBehaviour
     public void Awake()
     {
         gameManager = FindAnyObjectByType<GameManager>();
+        cardAction = GetComponent<CardAction>();
         Hand = GameObject.FindGameObjectWithTag("HandUI");
     }
     public void Start()
@@ -47,6 +63,10 @@ public class BattleManager : MonoBehaviour
         turn = Turn.Player;
         deck = gameManager.playerDeck;
         drawPile = deck;
+        discardPile.Clear();
+        UpdateDiscardPipleount();
+        UpdateDrawPipleCount();
+        energy = maxEnergy;
         
     }
     public void DrawCard(int amountDraw)
@@ -61,6 +81,7 @@ public class BattleManager : MonoBehaviour
             AddCardToHand(ref cardsInHand, drawPile[0]);
             drawPile.Remove(drawPile[0]);
             cardsDraw++;
+            UpdateDrawPipleCount();
         }
 
     }
@@ -79,6 +100,7 @@ public class BattleManager : MonoBehaviour
     public void DiscardCard(Card card)
     {
         discardPile.Add(card);
+        UpdateDiscardPipleount();
     }
 
     public void AddCardToHand(ref List<Card> cards, Card card)
@@ -90,8 +112,10 @@ public class BattleManager : MonoBehaviour
     }
     public void PlayCard(CardUIManager cardUI)
     {
-        
+        Debug.Log("In play card");
         //Play
+        Debug.Log(cardTarget);
+        Debug.Log(cardUI._card.cardTitile);
         cardAction.PerformAction(cardUI._card, cardTarget);
         
         //Energy
@@ -104,6 +128,89 @@ public class BattleManager : MonoBehaviour
         DiscardCard(cardUI._card);
 
     }
+    public void ChangeTurn()
+    {
+        if(turn == Turn.Player)
+        {
+            turn = Turn.Enemy;
+            endTurn.enabled = false;
+            foreach (Card item in cardsInHand)
+            {
+                DiscardCard(item);
+            }
+            foreach(CardUIManager cardUIManager in cardsInHandOBJ)
+            {
+                if(cardUIManager.gameObject.activeSelf)
+                {
+                    // Discard effect
+                }
+                cardUIManager.gameObject.SetActive(false);
+                cardsInHand.Clear();
+            }
+            foreach (Enemy enemy in enemies)
+            {
+                //Reset block value 
+                enemy.thisEnemy.currentBlock = 0;
+                enemy.thisEnemy.healthBarUI.DisplayBlock(0);
+            }
+            player.UpdateAtTurnStart();
+            StartCoroutine(HandleEnemyTurn());
+        }
+        else
+        {
+            foreach(Enemy enemy in enemies)
+            {
+                enemy.DisplayIntentAttack();
+            }
+            turn = Turn.Player;
+            //Reset Block maybe change in future
+            player.currentBlock = 0;
+            player.healthBarUI.DisplayBlock(0);
+            energy = maxEnergy;
+            
+            endTurn.enabled = true;
+            DrawCard(drawAmount);
+            
+        }
+    }
+    public IEnumerator HandleEnemyTurn()
+    {
+        Debug.Log("EnemyTurn");
+        yield return new WaitForSeconds(1.5f);
+        foreach (Enemy e in enemies)
+        {
+            e.midTurn = true;
+            e.TakeTurn();
+            while(e.midTurn)
+                yield return new WaitForEndOfFrame();
+        }
+        ChangeTurn();
+
+    }
+    public void UpdateDiscardPipleount()
+    {
+        discardPileCount.text = discardPile.Count.ToString();
+    }
+    public void UpdateDrawPipleCount()
+    {
+        drawPileCount.text = drawPile.Count.ToString();
+    }
+    public void EndFight(bool win)
+    {
+        if(!win)
+        {
+                //gameOver
+        }
+        player.ResetBuff();
+
+        //Update gameManager
+    }
+    public void HandleEndScreen()
+    {
+
+        
+    }
+
 
 /*    public void SpreadCards() // must fix here
     {

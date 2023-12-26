@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -13,7 +14,7 @@ public class Fighter : MonoBehaviour
     public int currentBlock = 0;
     public int poisionNumber = 0;
     public HealthBarUI healthBarUI;
-    public int[] a ;
+    public int[] a;
     public bool isPlayer;
 
     [Header("Manager")]
@@ -21,17 +22,19 @@ public class Fighter : MonoBehaviour
     public GameManager gameManager;
 
     [Header("Buff")]
-    public List<Buff> buffs = new List<Buff>();
     public Buff vulnerable;
-    public Buff burn;
     public Buff heal;
     public Buff weak;
     public Buff poision;
     public Buff erage;
     public Buff strength;
     public Buff dexterity;
+    public Buff frail;
+    public Buff stun;
     public GameObject buffPrefab;
     public Transform buffParent;
+
+
 
 
     /*[Header("Buffs")]*/
@@ -43,15 +46,38 @@ public class Fighter : MonoBehaviour
         currentHealth = maxHealth;
         healthBarUI.healthBar.maxValue = maxHealth;
         healthBarUI.DisplayHealth(currentHealth);
+        healthBarUI.DisplayPoision(0, currentHealth);
     }
 
     public void TakeDamage(int amount)
     {
-        if (currentBlock > 0) {
+        if (currentBlock > 0)
+        {
             amount = BlockDamage(amount);
         }
         currentHealth -= amount;
-        
+
+        UpdateHealth(currentHealth);
+        if (erage.buffValue > 0)
+        {
+            AddBuff(Buff.Type.strength, erage.buffValue);
+        }
+        if(currentHealth <= 0)
+        {
+            if (isPlayer == true)
+            {
+                BattleManager.EndFight(false);
+            }
+            else 
+            {
+                BattleManager.EndFight(true);
+            }
+            Destroy(gameObject);
+        }
+    }
+    public void Heal(int amount)
+    {
+        currentHealth += amount;
         UpdateHealth(currentHealth);
     }
     public void TakePoisionDamage(int amount)
@@ -60,9 +86,10 @@ public class Fighter : MonoBehaviour
         UpdateHealth(currentHealth);
     }
 
-    public int BlockDamage( int amount)
+    public int BlockDamage(int amount)
     {
-        if(currentBlock >= amount) {
+        if (currentBlock >= amount)
+        {
             currentBlock -= amount;
             amount = 0;
         }
@@ -82,7 +109,19 @@ public class Fighter : MonoBehaviour
     }
     public void AddBlock(int amount)
     {
-        currentBlock += amount;
+        int total = amount + dexterity.buffValue;
+        if (isPlayer && frail.buffValue > 0)
+        {
+            float round = total * 0.75f;
+            currentBlock += (int)round;
+        }
+        else
+        {
+            currentBlock += total;
+        }
+
+
+
         healthBarUI.DisplayBlock(currentBlock);
     }
     private void Dead()
@@ -90,103 +129,173 @@ public class Fighter : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    public void UpdateAtTurnEnd()
-    {
-        
-
-    }
-    public void UpdateAtTurnStart()
-    {
-        for (int i = buffs.Count - 1; i >= 0; i--)
-        {
-            if (!buffs[i].isPermernent)
-            {
-                Buff item = buffs[i];
-                item.AddBuffValue(-1);
-                if (item.buffValue == 0)
-                {
-                    buffs.RemoveAt(i);
-                }
-            }
- 
-        }
-    }
-
     public void AddBuff(Buff.Type _typebuff, int amount)
     {
-        int index = buffs.FindIndex(p => p.type == _typebuff);
-        if (index == -1)
+        if (_typebuff == Buff.Type.vulnerable)
         {
-            buffs[index].AddBuffValue(amount);
-        }
-        else
-        {
-            switch (_typebuff)
+            if (vulnerable.buffValue <= 0)
             {
-                case Buff.Type.vulnerable:
-                    {
-                        buffs.Add(vulnerable);
-                        buffs.Last().AddBuffValue(amount);
-                        return;
-                    }
-                case Buff.Type.weak:
-                    {
-                        buffs.Add(weak);
-                        buffs.Last().AddBuffValue(amount);
-                        return;
-                    };
-                case Buff.Type.heal:
-                    {
-                        buffs.Add(heal);
-                        buffs.Last().AddBuffValue(amount);
-                        return;
-                    };
-                case Buff.Type.strength:
-                    {
-                        buffs.Add(strength);
-                        buffs.Last().AddBuffValue(amount);
-                        return;
-                    };
-                case Buff.Type.dexterity:
-                    {
-                        buffs.Add(dexterity);
-                        buffs.Last().AddBuffValue(amount);
-                        return;
-                    };
-                case Buff.Type.poision:
-                    {
-                        buffs.Add(poision);
-                        buffs.Last().AddBuffValue(amount);
-                        return;
-                    };
-                case Buff.Type.burn:
-                    {
-                        buffs.Add(burn);
-                        buffs.Last().AddBuffValue(amount);
-                        return;
-                    };
-                case Buff.Type.enrage:
-                    {
-                        buffs.Add(erage);
-                        buffs.Last().AddBuffValue(amount);
-                        return;
-                    };
-                default: break;
+                vulnerable.buffUI = Instantiate(buffPrefab, buffParent).GetComponent<BuffUI>();
             }
+            vulnerable.AddBuffValue(amount);
+            vulnerable.buffUI.DisplayBuff(vulnerable);
         }
-        foreach (Buff buff in buffs)
+        else if (_typebuff == Buff.Type.heal)
         {
-            buff.buffUI.DisplayBuff(buff);
+            if (heal.buffValue <= 0)
+            {
+                heal.buffUI = Instantiate(buffPrefab, buffParent).GetComponent<BuffUI>();
+            }
+            heal.AddBuffValue(amount);
+            heal.buffUI.DisplayBuff(heal);
+        }
+        else if (_typebuff == Buff.Type.poision)
+        {
+            if (heal.buffValue <= 0)
+            {
+                poision.buffUI = Instantiate(buffPrefab, buffParent).GetComponent<BuffUI>();
+            }
+            poision.AddBuffValue(amount);
+            poision.buffUI.DisplayBuff(poision);
+            healthBarUI.DisplayPoision(poision.buffValue, currentHealth);
+        }
+        else if (_typebuff == Buff.Type.weak)
+        {
+            if (heal.buffValue <= 0)
+            {
+                weak.buffUI = Instantiate(buffPrefab, buffParent).GetComponent<BuffUI>();
+            }
+            weak.AddBuffValue(amount);
+            weak.buffUI.DisplayBuff(weak);
+        }
+        else if (_typebuff == Buff.Type.strength)
+        {
+            if (strength.buffValue <= 0)
+            {
+                strength.buffUI = Instantiate(buffPrefab, buffParent).GetComponent<BuffUI>();
+            }
+            strength.AddBuffValue(amount);
+            strength.buffUI.DisplayBuff(strength);
+        }
+        else if (_typebuff == Buff.Type.dexterity)
+        {
+            if (dexterity.buffValue <= 0)
+            {
+                dexterity.buffUI = Instantiate(buffPrefab, buffParent).GetComponent<BuffUI>();
+            }
+            dexterity.AddBuffValue(amount);
+            dexterity.buffUI.DisplayBuff(dexterity);
+        }
+        else if (_typebuff == Buff.Type.stun)
+        {
+            if (stun.buffValue <= 0)
+            {
+                stun.buffUI = Instantiate(buffPrefab, buffParent).GetComponent<BuffUI>();
+            }
+            stun.AddBuffValue(amount);
+            stun.buffUI.DisplayBuff(stun);
+        }
+        else if (_typebuff == Buff.Type.enrage)
+        {
+            if (erage.buffValue <= 0)
+            {
+                erage.buffUI = Instantiate(buffPrefab, buffParent).GetComponent<BuffUI>();
+            }
+            erage.AddBuffValue(amount);
+            erage.buffUI.DisplayBuff(erage);
         }
 
-
-        
     }
-    public int BuffIndex(Buff.Type _typebuff)
+
+    public void UpdateAtTurnStart()
     {
-        return buffs.FindIndex(item => item.type == _typebuff);
+        if (vulnerable.buffValue > 0)
+        {
+            vulnerable.buffValue -= 1;
+            vulnerable.buffUI.DisplayBuff(vulnerable);
+            if (vulnerable.buffValue <= 0)
+            {
+                Destroy(vulnerable.buffUI.gameObject);
+            }
+
+        }
+        if (weak.buffValue > 0)
+        {
+            weak.buffValue -= 1;
+            weak.buffUI.DisplayBuff(weak);
+            if (weak.buffValue <= 0)
+            {
+                Destroy(weak.buffUI.gameObject);
+            }
+
+        }
+        if (frail.buffValue > 0)
+        {
+            frail.buffValue -= 1;
+            frail.buffUI.DisplayBuff(vulnerable);
+            if (frail.buffValue <= 0)
+            {
+                Destroy(frail.buffUI.gameObject);
+            }
+
+        }
+        if (heal.buffValue > 0)
+        {
+            Heal(heal.buffValue);
+            heal.buffValue -= 1;
+            heal.buffUI.DisplayBuff(vulnerable);
+            if (heal.buffValue <= 0)
+            {
+                Destroy(heal.buffUI.gameObject);
+            }
+
+        }
+    }
+    public void ResetBuff()
+    {
+        if (vulnerable.buffValue > 0)
+        {
+            vulnerable.buffValue = 0;
+            Destroy(vulnerable.buffUI.gameObject);
+        }
+        else if (weak.buffValue > 0)
+        {
+            weak.buffValue = 0;
+            Destroy(weak.buffUI.gameObject);
+        }
+        else if (strength.buffValue > 0)
+        {
+            strength.buffValue = 0;
+            Destroy(strength.buffUI.gameObject);
+        }
+        else if (heal.buffValue > 0)
+        {
+            heal.buffValue=0;
+            Destroy(heal.buffUI.gameObject);
+        }
+        else if (frail.buffValue > 0)
+        {
+            frail.buffValue=0;
+            Destroy(frail.buffUI.gameObject);
+        }
+        else if(dexterity.buffValue > 0)
+        {
+            dexterity.buffValue = 0;
+            Destroy(dexterity.buffUI.gameObject);
+        }
+        else if(poision.buffValue > 0)
+        {
+            poision.buffValue = 0;
+            healthBarUI.DisplayPoision(0, currentHealth);
+            Destroy(dexterity.buffUI.gameObject);
+        }
+
         
+
+        currentBlock = 0;
+        healthBarUI.DisplayBlock(0);
     }
 
-    
+
+
 }

@@ -15,7 +15,7 @@ MonoBehaviour:
   cardTitile: Block
   isUpgrade: 0
   cardIcon: {fileID: 21300000, guid: 555269c4531a82d49a58c89f2eeab3ff, type: 3}
-  cardType: 0
+  cardType: 1
   cardCost:
     baseData: 1
     upgradeData: 1

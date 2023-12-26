@@ -381,17 +381,21 @@
 "Assets/CaptainCatSparrow/SpellIconsVolume_2/Scripts/Demo.cs"
 "Assets/ScriptableObjects/Card/Card.cs"
 "Assets/ScriptableObjects/EnemyAction/EnemyAction.cs"
+"Assets/ScriptableObjects/Relic/Relic.cs"
 "Assets/Scripts/BattleMangager.cs"
 "Assets/Scripts/Buff.cs"
 "Assets/Scripts/BuffUI.cs"
 "Assets/Scripts/CardAction.cs"
 "Assets/Scripts/CardTarget.cs"
 "Assets/Scripts/CardUIManager.cs"
+"Assets/Scripts/EndScreen.cs"
 "Assets/Scripts/Enemy/Enemy.cs"
 "Assets/Scripts/Fighter.cs"
 "Assets/Scripts/GameManager.cs"
 "Assets/Scripts/HealthBarUI.cs"
 "Assets/Scripts/ListExtension.cs"
+"Assets/Scripts/LoadReward.cs"
+"Assets/Scripts/PlayerStatsBar.cs"
 -langversion:9.0
 
 /deterministic

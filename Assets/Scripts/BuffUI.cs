@@ -16,7 +16,7 @@ public class BuffUI : MonoBehaviour
 
     public void DisplayBuff(Buff b)
     {
-        animator.Play("IntentSpawn");
+        // animator.Play("IntentSpawn");
         buffImage.sprite = b.buffIcon;
         buffAmountText.text = b.buffValue.ToString();
     }

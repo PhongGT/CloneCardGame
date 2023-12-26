@@ -6,26 +6,59 @@ public class GameManager : MonoBehaviour
 {
     public List<Card> playerDeck = new List<Card>();
     public List<Card> cardLibrary = new List<Card>();
-    public int floorNhumber = 1;
+    public List<Relic> relics = new List<Relic>();
+    public List<Relic> relicsLibrary = new List<Relic>();
+    public Relic startRelic;
+    public int floorNumber = 1;
     public int goldAmount;
 
-    void Start()
+    PlayerStatsBar playerStatsBar;
+
+    private void Awake()
     {
-        
+        playerStatsBar = FindObjectOfType<PlayerStatsBar>();
+    }
+    public void LoadPlayerStats()
+    {
+        relics.Add(startRelic);
+        playerStatsBar.playerStatsBarObject.SetActive(true);
+        playerStatsBar.DisplayRelics();
+    }
+    public void UpdateFloor()
+    {
+        		floorNumber+=1;
+
+		switch (floorNumber)
+        {
+            case 1:
+                playerStatsBar.floorText.text = floorNumber+"st Floor";
+                break;
+            case 2:
+                playerStatsBar.floorText.text = floorNumber+"nd Floor";
+                break;
+            case 3:
+                playerStatsBar.floorText.text = floorNumber+"rd Floor";
+                break;
+            default:
+                playerStatsBar.floorText.text = floorNumber+"th Floor";
+                break;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool HasRelic(string relicName)
     {
-        
+        bool nameExists = relics.Exists( r => r.relicName == relicName);
+        return nameExists;
+    }
+    public void UpdateGold(int amount)
+    {
+        goldAmount += amount;
+        playerStatsBar.moneyText.text = goldAmount.ToString();
     }
 
-    /*public void SavePlayerDeck()
+    public void DisplayHealth(int healthAmount, int maxHealth)
     {
-
+        playerStatsBar.healthDisplayText.text = $"{healthAmount} / {maxHealth}";
     }
-    public void LoadPlayerDeck()
-    { 
-    
-    }*/
+
 }

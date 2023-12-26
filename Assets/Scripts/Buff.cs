@@ -8,7 +8,7 @@ using UnityEngine;
 public struct Buff
 {
     public Type type;
-    public enum Type {burn, heal, vulnerable, weak, poision, enrage, strength, dexterity };
+    public enum Type {heal, vulnerable, weak, poision, enrage, strength, dexterity, frail, stun };
 
     public Sprite buffIcon;
     [Range(0, 999)]
