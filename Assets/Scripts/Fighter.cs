@@ -14,7 +14,6 @@ public class Fighter : MonoBehaviour
     public int currentBlock = 0;
     public int poisionNumber = 0;
     public HealthBarUI healthBarUI;
-    public int[] a;
     public bool isPlayer;
 
     [Header("Manager")]
@@ -46,6 +45,7 @@ public class Fighter : MonoBehaviour
         currentHealth = maxHealth;
         healthBarUI.healthBar.maxValue = maxHealth;
         healthBarUI.DisplayHealth(currentHealth);
+        healthBarUI.DisplayBlock(currentBlock);
         healthBarUI.DisplayPoision(0, currentHealth);
     }
 
@@ -55,35 +55,41 @@ public class Fighter : MonoBehaviour
         {
             amount = BlockDamage(amount);
         }
-        currentHealth -= amount;
+        if(isPlayer && gameManager.HasRelic("ChainArmor"))
+        {
+            amount= Mathf.Clamp(amount-1, 0 , int.MaxValue);
+        }
+        currentHealth = Mathf.Clamp(currentHealth-amount,0, maxHealth);
 
-        UpdateHealth(currentHealth);
+        UpdateHealth();
         if (erage.buffValue > 0)
         {
             AddBuff(Buff.Type.strength, erage.buffValue);
         }
-        if(currentHealth <= 0)
+        if (currentHealth <= 0)
         {
             if (isPlayer == true)
             {
                 BattleManager.EndFight(false);
             }
-            else 
+            else
             {
                 BattleManager.EndFight(true);
+                Destroy(gameObject);
             }
-            Destroy(gameObject);
+            
         }
     }
     public void Heal(int amount)
     {
-        currentHealth += amount;
-        UpdateHealth(currentHealth);
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+        UpdateHealth();
     }
-    public void TakePoisionDamage(int amount)
+    public void TakePoisionDamage()
     {
-        currentHealth -= poisionNumber;
-        UpdateHealth(currentHealth);
+        int amount = poision.buffValue;
+        currentHealth = Mathf.Clamp(currentHealth - amount, 0, maxHealth);
+        UpdateHealth();
     }
 
     public int BlockDamage(int amount)
@@ -101,16 +107,24 @@ public class Fighter : MonoBehaviour
         healthBarUI.DisplayBlock(currentBlock);
         return amount;
     }
-    public void UpdateHealth(int newAmount)
+    public void UpdateHealth()
     {
-        currentHealth = newAmount;
-        healthBarUI.DisplayHealth(newAmount);
+        
+        healthBarUI.DisplayHealth(currentHealth);
+        healthBarUI.poisionBar.maxValue = currentHealth;
+        if (isPlayer)
+            gameManager.DisplayHealth(currentHealth, maxHealth);
         //check nhan vat 
+    }
+    public void UpdateMaxHealth()
+    {
+        healthBarUI.healthBar.maxValue = maxHealth;
+        UpdateHealth();
     }
     public void AddBlock(int amount)
     {
         int total = amount + dexterity.buffValue;
-        if (isPlayer && frail.buffValue > 0)
+        if (frail.buffValue > 0)
         {
             float round = total * 0.75f;
             currentBlock += (int)round;
@@ -119,8 +133,6 @@ public class Fighter : MonoBehaviour
         {
             currentBlock += total;
         }
-
-
 
         healthBarUI.DisplayBlock(currentBlock);
     }
@@ -151,7 +163,7 @@ public class Fighter : MonoBehaviour
         }
         else if (_typebuff == Buff.Type.poision)
         {
-            if (heal.buffValue <= 0)
+            if (poision.buffValue <= 0)
             {
                 poision.buffUI = Instantiate(buffPrefab, buffParent).GetComponent<BuffUI>();
             }
@@ -161,7 +173,7 @@ public class Fighter : MonoBehaviour
         }
         else if (_typebuff == Buff.Type.weak)
         {
-            if (heal.buffValue <= 0)
+            if (weak.buffValue <= 0)
             {
                 weak.buffUI = Instantiate(buffPrefab, buffParent).GetComponent<BuffUI>();
             }
@@ -232,7 +244,7 @@ public class Fighter : MonoBehaviour
         if (frail.buffValue > 0)
         {
             frail.buffValue -= 1;
-            frail.buffUI.DisplayBuff(vulnerable);
+            frail.buffUI.DisplayBuff(frail);
             if (frail.buffValue <= 0)
             {
                 Destroy(frail.buffUI.gameObject);
@@ -243,10 +255,21 @@ public class Fighter : MonoBehaviour
         {
             Heal(heal.buffValue);
             heal.buffValue -= 1;
-            heal.buffUI.DisplayBuff(vulnerable);
+            heal.buffUI.DisplayBuff(heal);
             if (heal.buffValue <= 0)
             {
                 Destroy(heal.buffUI.gameObject);
+            }
+
+        }
+        if (poision.buffValue > 0)
+        {
+            TakePoisionDamage();
+            poision.buffValue -= 1;
+            poision.buffUI.DisplayBuff(poision);
+            if (poision.buffValue <= 0)
+            {
+                Destroy(poision.buffUI.gameObject);
             }
 
         }
@@ -270,27 +293,27 @@ public class Fighter : MonoBehaviour
         }
         else if (heal.buffValue > 0)
         {
-            heal.buffValue=0;
+            heal.buffValue = 0;
             Destroy(heal.buffUI.gameObject);
         }
         else if (frail.buffValue > 0)
         {
-            frail.buffValue=0;
+            frail.buffValue = 0;
             Destroy(frail.buffUI.gameObject);
         }
-        else if(dexterity.buffValue > 0)
+        else if (dexterity.buffValue > 0)
         {
             dexterity.buffValue = 0;
             Destroy(dexterity.buffUI.gameObject);
         }
-        else if(poision.buffValue > 0)
+        else if (poision.buffValue > 0)
         {
             poision.buffValue = 0;
             healthBarUI.DisplayPoision(0, currentHealth);
             Destroy(dexterity.buffUI.gameObject);
         }
 
-        
+
 
         currentBlock = 0;
         healthBarUI.DisplayBlock(0);

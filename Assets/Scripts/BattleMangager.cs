@@ -21,27 +21,36 @@ public class BattleManager : MonoBehaviour
     public Button endTurn;
     public TMP_Text drawPileCount;
     public TMP_Text discardPileCount;
-    
+    public TMP_Text energyText;
+    public Transform enemyParent;
+    public PTrigger shuffleParticle;
+
+    public PTrigger playcardParticle;
+    public Animator holyLight;
+
 
     [Header("BattleStats")]
     public int maxEnergy;
     public int energy;
     public int drawAmount;
     public Turn turn;
-    public enum Turn {Player, Enemy }
+    public enum Turn { Player, Enemy }
 
     [Header("Enemy")]
-    
+
     public List<Enemy> enemies = new List<Enemy>();
     public List<Fighter> enemyFighters = new List<Fighter>();
+    public List<GameObject> enemyObjs = new List<GameObject>();
 
     public GameObject[] posibleEnemies;
     public GameObject[] possibleElites;
     public GameObject[] possibleBosses;
-    bool isElite;
+    public bool isElite;
     public Fighter cardTarget;
     public Fighter player;
     public GameManager gameManager;
+    public RewardScreen rewardScreen;
+    public GameObject gameOver;
     CardAction cardAction;
 
 
@@ -51,32 +60,67 @@ public class BattleManager : MonoBehaviour
         cardAction = GetComponent<CardAction>();
         Hand = GameObject.FindGameObjectWithTag("HandUI");
     }
-    public void Start()
+    public void StartBossFight()
     {
-        BeginBattle();
-        DrawCard(5);
+        isElite = true;
+        BeginBattle(possibleBosses);
+    }
+    public void StartMobFight()
+    {
+        isElite = false;
+        BeginBattle(posibleEnemies);
     }
 
-    public void BeginBattle()
+    public void BeginBattle(GameObject[] prefabs)
     {
         //Turn nguoi choi dau tien
+        GameObject newEnemy = Instantiate(prefabs[Random.Range(0,prefabs.Length)], enemyParent);
+        enemyObjs.Add(newEnemy);
+        newEnemy.SetActive(true);
+        if(rewardScreen!=null)
+        {
+            rewardScreen.gameObject.SetActive(false);
+        }
+        enemies.Clear();
+        Enemy e = FindObjectOfType<Enemy>();
+        enemies.Add(e);
+        enemyFighters.Add(e.GetComponent<Fighter>());
+
+        player.UpdateHealth();
         turn = Turn.Player;
-        deck = gameManager.playerDeck;
+        deck = new List<Card>(gameManager.playerDeck);
         drawPile = deck;
+        drawPile.Shuffle();
         discardPile.Clear();
-        UpdateDiscardPipleount();
-        UpdateDrawPipleCount();
+        cardsInHand.Clear();
+        StartCoroutine(DrawCard(5));
+        UpdateDiscardPipleCount();
         energy = maxEnergy;
-        
+        UpdateEnergyText();
+
+        StartRelic();
+
     }
-    public void DrawCard(int amountDraw)
+    public void StartRelic()
+    {
+        if (gameManager.HasRelic("Lantern"))
+        {
+            energy += 1;
+        }
+        if (gameManager.HasRelic("WhetStone"))
+        {
+            player.AddBuff(Buff.Type.strength, 1);
+        }
+    }
+    public IEnumerator DrawCard(int amountDraw)
     {
         int cardsDraw = 0;
         while (cardsDraw < amountDraw)
         {
-            if(drawPile.Count < 1)
+            if (drawPile.Count < 1)
             {
-                ShuffleCard();
+                StartCoroutine(ShuffleCard());
+                yield return new WaitForSeconds(2f);
             }
             AddCardToHand(ref cardsInHand, drawPile[0]);
             drawPile.Remove(drawPile[0]);
@@ -85,52 +129,74 @@ public class BattleManager : MonoBehaviour
         }
 
     }
-    public void ShuffleCard()
+    public IEnumerator ShuffleCard()
     {
+        shuffleParticle.TriggerOn();
         discardPile.Shuffle();
         drawPile = discardPile;
         discardPile = new List<Card>();
+        UpdateDiscardPipleCount();
+        yield return new WaitForSeconds(1.5f);
+        
+        
     }
     public void DisplayCard(Card card)
     {
+        if(cardsInHand.Count > 9)
+        {
+            DiscardCard(card);
+            return;
+        }
         CardUIManager cardUIManager = cardsInHandOBJ[cardsInHand.Count - 1];
         cardUIManager.LoadCard(card);
         cardUIManager.gameObject.SetActive(true);
     }
     public void DiscardCard(Card card)
     {
-        discardPile.Add(card);
-        UpdateDiscardPipleount();
+        if (card.cardType == Card.CardType.Power)
+        {
+            UpdateDiscardPipleCount();
+        }
+        else
+        {
+            discardPile.Add(card);
+            UpdateDiscardPipleCount();
+        }
+
     }
 
     public void AddCardToHand(ref List<Card> cards, Card card)
     {
         cards.Add(card);
         DisplayCard(card);
-        spreadAngle = maxSpreadAngle;
+        // spreadAngle = maxSpreadAngle;
         /*SpreadCards();*/
     }
-    public void PlayCard(CardUIManager cardUI)
+    public IEnumerator PlayCard(CardUIManager cardUI)
     {
         Debug.Log("In play card");
         //Play
         Debug.Log(cardTarget);
         Debug.Log(cardUI._card.cardTitile);
         cardAction.PerformAction(cardUI._card, cardTarget);
-        
+
         //Energy
         energy -= cardUI._card.GetCardValue();
-        
+        UpdateEnergyText();
+
         //Discard
         selectedCard = null;
         cardUI.gameObject.SetActive(false);
         cardsInHand.Remove(cardUI._card);
         DiscardCard(cardUI._card);
+        playcardParticle.TriggerOn();
+        yield return new WaitForSeconds(0.5f);
+        UpdateDiscardPipleCount();
 
     }
     public void ChangeTurn()
     {
-        if(turn == Turn.Player)
+        if (turn == Turn.Player)
         {
             turn = Turn.Enemy;
             endTurn.enabled = false;
@@ -138,9 +204,9 @@ public class BattleManager : MonoBehaviour
             {
                 DiscardCard(item);
             }
-            foreach(CardUIManager cardUIManager in cardsInHandOBJ)
+            foreach (CardUIManager cardUIManager in cardsInHandOBJ)
             {
-                if(cardUIManager.gameObject.activeSelf)
+                if (cardUIManager.gameObject.activeSelf)
                 {
                     // Discard effect
                 }
@@ -158,7 +224,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            foreach(Enemy enemy in enemies)
+            foreach (Enemy enemy in enemies)
             {
                 enemy.DisplayIntentAttack();
             }
@@ -167,10 +233,11 @@ public class BattleManager : MonoBehaviour
             player.currentBlock = 0;
             player.healthBarUI.DisplayBlock(0);
             energy = maxEnergy;
-            
+            UpdateEnergyText();
+
             endTurn.enabled = true;
-            DrawCard(drawAmount);
-            
+            StartCoroutine(DrawCard(drawAmount));
+
         }
     }
     public IEnumerator HandleEnemyTurn()
@@ -181,13 +248,17 @@ public class BattleManager : MonoBehaviour
         {
             e.midTurn = true;
             e.TakeTurn();
-            while(e.midTurn)
+            while (e.midTurn)
                 yield return new WaitForEndOfFrame();
         }
         ChangeTurn();
 
     }
-    public void UpdateDiscardPipleount()
+    public void UpdateEnergyText()
+    {
+        energyText.text = energy.ToString() + "/" + maxEnergy.ToString();
+    }
+    public void UpdateDiscardPipleCount()
     {
         discardPileCount.text = discardPile.Count.ToString();
     }
@@ -197,49 +268,70 @@ public class BattleManager : MonoBehaviour
     }
     public void EndFight(bool win)
     {
-        if(!win)
+        if (!win)
         {
-                //gameOver
+            //gameOver
+            gameOver.SetActive(true);
         }
-        player.ResetBuff();
+        else
+        {
+            if (gameManager.HasRelic("HolyLight"))
+            {
+                player.Heal(6);
+                holyLight.SetTrigger("Buff");
+            }
+            player.ResetBuff();
+            HandleEndScreen();
+            gameManager.UpdateFloor();
+        }
+
+
 
         //Update gameManager
     }
     public void HandleEndScreen()
     {
+        rewardScreen.gameObject.SetActive(true);
+        rewardScreen.goldReward.SetActive(true);
+        rewardScreen.goldText.text = enemies[0].goldDrop.ToString() + "Gold";
+        rewardScreen.cardReward.SetActive(true);
 
-        
+        if (isElite)
+        {
+            rewardScreen.relicReward.SetActive(true);
+        }
+
     }
 
 
-/*    public void SpreadCards() // must fix here
-    {
-        float angleStep = spreadAngle / (cardsInHand.Count - 1);
+    /*    public void SpreadCards() // must fix here
+        {
+            float angleStep = spreadAngle / (cardsInHand.Count - 1);
 
-        Vector3 startPos = Hand.transform.position - 
-            Hand.transform.right * (cardSpacing * (cardsInHand.Count - 1)) / 2f;
-        if( cardsInHand.Count %2 == 0 ) {
-            for (int i = 0; i < cardsInHand.Count/2; i++)
-            {
-                Vector3 cardPos = startPos + Hand.transform.right * (cardSpacing * i);
-                float z = (-spreadAngle / 2f + angleStep * i);
+            Vector3 startPos = Hand.transform.position - 
+                Hand.transform.right * (cardSpacing * (cardsInHand.Count - 1)) / 2f;
+            if( cardsInHand.Count %2 == 0 ) {
+                for (int i = 0; i < cardsInHand.Count/2; i++)
+                {
+                    Vector3 cardPos = startPos + Hand.transform.right * (cardSpacing * i);
+                    float z = (-spreadAngle / 2f + angleStep * i);
+
+                }
 
             }
+            else
+            {
 
-        }
-        else
-        {
+            }
+            for (int i = 0; i < cardsInHand.Count/2; i++)      {
 
-        }
-        for (int i = 0; i < cardsInHand.Count/2; i++)      {
-            
-            Vector3 cardPos = startPos + Hand.transform.right * (cardSpacing *i);
-            float z = (-spreadAngle/2f + angleStep * i);
+                Vector3 cardPos = startPos + Hand.transform.right * (cardSpacing *i);
+                float z = (-spreadAngle/2f + angleStep * i);
 
-            Debug.Log(z);
-            Debug.Log("Pos: "+cardPos);
-            Quaternion cardRotation = Quaternion.Euler(0f, 0f, z);
+                Debug.Log(z);
+                Debug.Log("Pos: "+cardPos);
+                Quaternion cardRotation = Quaternion.Euler(0f, 0f, z);
 
-        }
-    }*/
+            }
+        }*/
 }

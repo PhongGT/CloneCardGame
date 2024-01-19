@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardTitile: Block
   isUpgrade: 0
-  cardIcon: {fileID: 21300000, guid: 555269c4531a82d49a58c89f2eeab3ff, type: 3}
+  cardIcon: {fileID: 21300000, guid: bbbf85350151bad4aa5414de9d396bd3, type: 3}
   cardType: 1
   cardCost:
     baseData: 1

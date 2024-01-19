@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dec16fd0325cd84a8d33f9544461cba, type: 3}
+  m_Name: Armor Up
+  m_EditorClassIdentifier: 
+  cardTitile: Armor Up
+  isUpgrade: 0
+  cardIcon: {fileID: 21300000, guid: 5fb8b2f1624446b4d832db7385b43f40, type: 3}
+  cardType: 1
+  cardCost:
+    baseData: 1
+    upgradeData: 1
+  cardEffect:
+    baseData: 8
+    upgradeData: 11
+  buffAmount:
+    baseData: 0
+    upgradeData: 0
+  cardDescription:
+    baseData: Gain 8 Block and Draw 1 card.
+    upgradeData: Gain 11 Block and Draw 1 card.

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dec16fd0325cd84a8d33f9544461cba, type: 3}
+  m_Name: Bash
+  m_EditorClassIdentifier: 
+  cardTitile: Bash
+  isUpgrade: 0
+  cardIcon: {fileID: 21300000, guid: 864b55b5281c02244a5a9e626a8c483c, type: 3}
+  cardType: 0
+  cardCost:
+    baseData: 2
+    upgradeData: 2
+  cardEffect:
+    baseData: 8
+    upgradeData: 10
+  buffAmount:
+    baseData: 2
+    upgradeData: 3
+  cardDescription:
+    baseData: Deal 8 damage. Apply 2 Vulnerable.
+    upgradeData: Deal 10 damage. Apply 3 Vulnerable.

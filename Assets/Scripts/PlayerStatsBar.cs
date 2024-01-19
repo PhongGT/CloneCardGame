@@ -10,12 +10,20 @@ public class PlayerStatsBar : MonoBehaviour
 	public Transform relicParent;
 	public GameObject relicPrefab;
 	public GameObject playerStatsBarObject;
+    
     GameManager gameManager;
     private void Awake() {
         gameManager = FindObjectOfType<GameManager>();
     }
     public void DisplayRelics()
     {
-
+        foreach(Transform r in relicParent)
+        Destroy(r.gameObject);
+        foreach(Relic r in gameManager.relics)
+        {
+            //This code not optimal need a little bit change
+            GameObject a = Instantiate(relicPrefab, relicParent);
+            a.GetComponent<RelicUI>().LoadRelic(r);
+        }
     }
 }

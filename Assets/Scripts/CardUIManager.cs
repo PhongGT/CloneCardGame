@@ -14,7 +14,7 @@ public class CardUIManager : MonoBehaviour
     [SerializeField] TMP_Text cardCost;
     [SerializeField] TMP_Text cardType;
 
-    BattleManager BattleManager;
+    BattleManager battleManager;
 
     HorizontalLayoutGroup horizontalLayoutGroup;
     SortingGroup sortingGroup;
@@ -23,7 +23,7 @@ public class CardUIManager : MonoBehaviour
 
     private void Awake()
     {
-        BattleManager = FindObjectOfType<BattleManager>();
+        battleManager = FindObjectOfType<BattleManager>();
         horizontalLayoutGroup = GetComponentInParent<HorizontalLayoutGroup>();
         sortingGroup = GetComponent<SortingGroup>();
         animator = GetComponent<Animator>();
@@ -47,13 +47,15 @@ public class CardUIManager : MonoBehaviour
     }
     public void SetItemPositon(Vector2 pos)
     {
-        GetComponent <RectTransform> ().anchoredPosition += pos;        
+        GetComponent<RectTransform>().anchoredPosition += pos;
     }
-    public void SetCardDescription(string des) {
+    public void SetCardDescription(string des)
+    {
         cardDescription.text = des;
-        
+
     }
-    public void SetCardIcon(Sprite image) {
+    public void SetCardIcon(Sprite image)
+    {
         cardIcon.sprite = image;
 
     }
@@ -67,21 +69,21 @@ public class CardUIManager : MonoBehaviour
     }
     public void SelectedCard()
     {
-        BattleManager.selectedCard = this;
+        battleManager.selectedCard = this;
         Debug.Log(this.cardDescription.text);
-        
-        
+
+
     }
     public void DeSelectedCard()
     {
-        BattleManager.selectedCard = null;
+        battleManager.selectedCard = null;
         Debug.Log(this.cardDescription.text + " Null");
-        
+
     }
     // Must make a custom Hand Holder to make this work
     public void HoverCard()
     {
-        if(BattleManager.selectedCard == null)
+        if (battleManager.selectedCard == null)
         {
             //hover animation
             AnimatonHoverOnCard();
@@ -95,29 +97,50 @@ public class CardUIManager : MonoBehaviour
     public void HandleDrag()
     {
         //Nothing importance here
+        if (_card.cardType == Card.CardType.Attack)
+        {
+            foreach (Enemy e in battleManager.enemies)
+            {
+                e.targetObject.SetActive(true);
+            }
+        }
+
     }
     public void HandleEndDragCard()
     {
         Debug.Log("In Handle End Drag!!");
-        if(BattleManager.energy < _card.GetCardValue())
+        if (battleManager.energy < _card.GetCardValue())
         {
             Debug.Log("Not enough Energy");
+            foreach (Enemy e in battleManager.enemies)
+            {
+                e.targetObject.SetActive(false);
+            }
             return;
         }
-        if(_card.cardType == Card.CardType.Attack && BattleManager.cardTarget == null)
+        if (_card.cardType == Card.CardType.Attack && battleManager.cardTarget == null)
         {
+            foreach (Enemy e in battleManager.enemies)
+            {
+                e.targetObject.SetActive(false);
+            }
             return;
         }
-        if( _card.cardType == Card.CardType.Attack)
+        if (_card.cardType == Card.CardType.Attack)
         {
-            BattleManager.PlayCard(this);
+            StartCoroutine(battleManager.PlayCard(this));
             //animation
         }
-        if( _card.cardType != Card.CardType.Attack)
+        if (_card.cardType != Card.CardType.Attack)
         {
             Debug.Log("Skill, Power, Block");
             //animation
-            BattleManager.PlayCard(this);
+            StartCoroutine(battleManager.PlayCard(this));
+        }
+
+        foreach (Enemy e in battleManager.enemies)
+        {
+            e.targetObject.SetActive(false);
         }
     }
 
@@ -126,5 +149,5 @@ public class CardUIManager : MonoBehaviour
         animator.SetBool("Hover", true);
     }
 
-    
+
 }

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -14,7 +13,7 @@ public class Enemy : MonoBehaviour
     public Fighter thisEnemy;
 
     [Header("Intent_Action")]
-    public Image image;
+    public Sprite image;
     public TMP_Text intentAmount;
 
     [Header("Specifics")]
@@ -24,6 +23,7 @@ public class Enemy : MonoBehaviour
     public bool flyingEye;
     public bool demonSlime;
     public bool mushroom;
+    public GameObject targetObject;
     public BattleManager BattleManager;
     public bool midTurn;
 
@@ -31,15 +31,18 @@ public class Enemy : MonoBehaviour
     public Fighter player;
 
     //Animator
-    private void Awake() {
+    private void Awake()
+    {
         thisEnemy = GetComponent<Fighter>();
+        BattleManager = FindObjectOfType<BattleManager>();
+        player = BattleManager.player;
     }
     private void Start()
     {
         BattleManager = FindObjectOfType<BattleManager>();
         player = BattleManager.player;
-        
-        
+
+
         //animator = GetComponent<Animator>();
 
         if (shuffleActions)
@@ -71,7 +74,7 @@ public class Enemy : MonoBehaviour
     public void TakeTurn()
     {
         Debug.Log("Enemy Take Turn!");
-        if(thisEnemy.stun.buffValue > 0)
+        if (thisEnemy.stun.buffValue > 0)
         {
             return;
         }
@@ -95,8 +98,8 @@ public class Enemy : MonoBehaviour
                 WarpUpTurn();
                 break;
             case EnemyAction.IntentType.AttackDebuff:
-                StartCoroutine(Attack());
-                ApplyBuffToPlayer();
+                
+                StartCoroutine(Attack());ApplyBuffToPlayer();
                 WarpUpTurn();
                 break;
             case EnemyAction.IntentType.AddCurseCard:
@@ -127,7 +130,7 @@ public class Enemy : MonoBehaviour
     {
         foreach (Buff.Type type in turns[turnNumber].buffTypes)
         {
-            player.AddBuff(type, turns[turnNumber].amount);
+            player.AddBuff(type, turns[turnNumber].debuffAmount);
         }
 
     }
@@ -138,7 +141,6 @@ public class Enemy : MonoBehaviour
     public IEnumerator Attack()
     {
         // Animation
-        
         //Attack
         float round = 0;
         int totalDamage = turns[turnNumber].amount + thisEnemy.strength.buffValue;
@@ -147,34 +149,40 @@ public class Enemy : MonoBehaviour
             round = totalDamage * 1.5f;
             totalDamage = (int)round;
         }
-        if(thisEnemy.weak.buffValue > 0)
+        if (thisEnemy.weak.buffValue > 0)
         {
             round = totalDamage * 0.75f;
             totalDamage = (int)round;
         }
-        
+        animator.Play("Attack"); 
+        yield return new WaitForSeconds(0.8f);   
         for (int i = 0; i < turns[turnNumber].number_of_hit; i++)
-        {   animator.Play("Attack");
+        {
             Debug.Log("Enemy hit: " + totalDamage);
             player.TakeDamage(totalDamage);
         }
-        yield return new WaitForSeconds(0.4f);
+        
         animator.Play("Idle");
+        
     }
 
     public void WarpUpTurn()
     {
         // Manage Special turn for each enemy and Endturn manage
         turnNumber++;
-        if(turnNumber == turns.Count)
+        if (turnNumber == turns.Count)
         {
             turnNumber = 0;
         }
-        if(demonSlime && turnNumber == 0)
+        if (demonSlime && turnNumber == 0 || turnNumber == 4)
         {
             turnNumber = 1;
         }
-        if(mushroom && turnNumber == 0)
+        if(demonSlime && thisEnemy.currentHealth <= (thisEnemy.maxHealth/2))
+        {
+            turnNumber = 5;
+        }
+        if (mushroom && turnNumber == 0)
         {
             turnNumber = 1;
         }
