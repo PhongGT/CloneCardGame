@@ -85,6 +85,7 @@ public class BattleManager : MonoBehaviour
         Enemy e = FindObjectOfType<Enemy>();
         enemies.Add(e);
         enemyFighters.Add(e.GetComponent<Fighter>());
+        
 
         player.UpdateHealth();
         turn = Turn.Player;
@@ -219,15 +220,16 @@ public class BattleManager : MonoBehaviour
                 enemy.thisEnemy.currentBlock = 0;
                 enemy.thisEnemy.healthBarUI.DisplayBlock(0);
             }
-            player.UpdateAtTurnStart();
+            
             StartCoroutine(HandleEnemyTurn());
+            player.UpdateAtTurnStart();
         }
         else
         {
-            foreach (Enemy enemy in enemies)
-            {
-                enemy.DisplayIntentAttack();
-            }
+            // foreach (Enemy enemy in enemies)
+            // {
+            //     enemy.DisplayIntentAttack();
+            // }
             turn = Turn.Player;
             //Reset Block maybe change in future
             player.currentBlock = 0;
@@ -243,7 +245,6 @@ public class BattleManager : MonoBehaviour
     public IEnumerator HandleEnemyTurn()
     {
         Debug.Log("EnemyTurn");
-        yield return new WaitForSeconds(1.5f);
         foreach (Enemy e in enemies)
         {
             e.midTurn = true;
@@ -251,6 +252,7 @@ public class BattleManager : MonoBehaviour
             while (e.midTurn)
                 yield return new WaitForEndOfFrame();
         }
+        yield return new WaitForSeconds(1.5f);
         ChangeTurn();
 
     }

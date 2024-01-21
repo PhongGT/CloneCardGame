@@ -343,6 +343,7 @@
 "Assets/Scripts/GameManager.cs"
 "Assets/Scripts/GameOver.cs"
 "Assets/Scripts/HealthBarUI.cs"
+"Assets/Scripts/IntentUI.cs"
 "Assets/Scripts/ListExtension.cs"
 "Assets/Scripts/LoadReward.cs"
 "Assets/Scripts/PlayerStatsBar.cs"

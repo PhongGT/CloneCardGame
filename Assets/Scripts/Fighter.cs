@@ -55,11 +55,11 @@ public class Fighter : MonoBehaviour
         {
             amount = BlockDamage(amount);
         }
-        if(isPlayer && gameManager.HasRelic("ChainArmor"))
+        if (isPlayer && gameManager.HasRelic("ChainArmor"))
         {
-            amount= Mathf.Clamp(amount-1, 0 , int.MaxValue);
+            amount = Mathf.Clamp(amount - 1, 0, int.MaxValue);
         }
-        currentHealth = Mathf.Clamp(currentHealth-amount,0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth - amount, 0, maxHealth);
 
         UpdateHealth();
         if (erage.buffValue > 0)
@@ -77,7 +77,7 @@ public class Fighter : MonoBehaviour
                 BattleManager.EndFight(true);
                 Destroy(gameObject);
             }
-            
+
         }
     }
     public void Heal(int amount)
@@ -90,6 +90,19 @@ public class Fighter : MonoBehaviour
         int amount = poision.buffValue;
         currentHealth = Mathf.Clamp(currentHealth - amount, 0, maxHealth);
         UpdateHealth();
+        if (currentHealth <= 0)
+        {
+            if (isPlayer == true)
+            {
+                BattleManager.EndFight(false);
+            }
+            else
+            {
+                BattleManager.EndFight(true);
+                Destroy(gameObject);
+            }
+
+        }
     }
 
     public int BlockDamage(int amount)
@@ -109,7 +122,7 @@ public class Fighter : MonoBehaviour
     }
     public void UpdateHealth()
     {
-        
+
         healthBarUI.DisplayHealth(currentHealth);
         healthBarUI.poisionBar.maxValue = currentHealth;
         if (isPlayer)

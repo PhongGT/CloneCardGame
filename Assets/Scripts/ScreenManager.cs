@@ -11,6 +11,8 @@ public class ScreenManager : MonoBehaviour
     public GameObject gameOverScene;
 
     public GameObject restScene;
+
+    public GameObject exitPanel;
     
     GameManager gameManager;
     BattleManager battleManager;
@@ -57,4 +59,20 @@ public class ScreenManager : MonoBehaviour
         }
         yield return new WaitForSeconds(1f);
     }
+    public void ShowExitPanel()
+    {
+        exitPanel.SetActive(true);
+    }
+    public void ExitGame(bool isExit)
+    {
+        if(isExit)
+        {
+            Application.Quit();
+        }
+        else{
+            exitPanel.SetActive(false);
+        }
+        
+    }
+
 }

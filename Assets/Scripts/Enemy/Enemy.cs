@@ -13,8 +13,7 @@ public class Enemy : MonoBehaviour
     public Fighter thisEnemy;
 
     [Header("Intent_Action")]
-    public Sprite image;
-    public TMP_Text intentAmount;
+    public IntentUI intentUI;
 
     [Header("Specifics")]
     public int goldDrop;
@@ -35,7 +34,9 @@ public class Enemy : MonoBehaviour
     {
         thisEnemy = GetComponent<Fighter>();
         BattleManager = FindObjectOfType<BattleManager>();
+        intentUI = GetComponentInChildren<IntentUI>();
         player = BattleManager.player;
+        turnNumber = 0;
     }
     private void Start()
     {
@@ -47,6 +48,8 @@ public class Enemy : MonoBehaviour
 
         if (shuffleActions)
             GenerateTurns();
+
+        DisplayIntentAttack();
     }
 
     // Update is called once per frame
@@ -59,6 +62,8 @@ public class Enemy : MonoBehaviour
         BattleManager = FindObjectOfType<BattleManager>();
         player = BattleManager.player;
         thisEnemy = GetComponent<Fighter>();
+        if (shuffleActions)
+            GenerateTurns();
     }
     public void GenerateTurns()
     {
@@ -74,6 +79,7 @@ public class Enemy : MonoBehaviour
     public void TakeTurn()
     {
         Debug.Log("Enemy Take Turn!");
+        intentUI.IntentFade();
         if (thisEnemy.stun.buffValue > 0)
         {
             return;
@@ -98,8 +104,8 @@ public class Enemy : MonoBehaviour
                 WarpUpTurn();
                 break;
             case EnemyAction.IntentType.AttackDebuff:
-                
-                StartCoroutine(Attack());ApplyBuffToPlayer();
+
+                StartCoroutine(Attack()); ApplyBuffToPlayer();
                 WarpUpTurn();
                 break;
             case EnemyAction.IntentType.AddCurseCard:
@@ -154,16 +160,16 @@ public class Enemy : MonoBehaviour
             round = totalDamage * 0.75f;
             totalDamage = (int)round;
         }
-        animator.Play("Attack"); 
-        yield return new WaitForSeconds(0.8f);   
+        animator.Play("Attack");
+        yield return new WaitForSeconds(0.8f);
         for (int i = 0; i < turns[turnNumber].number_of_hit; i++)
         {
             Debug.Log("Enemy hit: " + totalDamage);
             player.TakeDamage(totalDamage);
         }
-        
+
         animator.Play("Idle");
-        
+
     }
 
     public void WarpUpTurn()
@@ -174,11 +180,15 @@ public class Enemy : MonoBehaviour
         {
             turnNumber = 0;
         }
-        if (demonSlime && turnNumber == 0 || turnNumber == 4)
+        if (demonSlime)
         {
-            turnNumber = 1;
+            if(turnNumber == 0 || turnNumber == 4)
+            {
+                turnNumber = 1;
+            }
+            
         }
-        if(demonSlime && thisEnemy.currentHealth <= (thisEnemy.maxHealth/2))
+        if (demonSlime && thisEnemy.currentHealth <= (thisEnemy.maxHealth / 2))
         {
             turnNumber = 5;
         }
@@ -186,12 +196,20 @@ public class Enemy : MonoBehaviour
         {
             turnNumber = 1;
         }
+        DisplayIntentAttack();
         thisEnemy.UpdateAtTurnStart();
+        
         midTurn = false;
     }
     public void DisplayIntentAttack()
     {
+        Debug.Log("DisplayIntent");
         //Need more Icon for this 
-
+        if (turns.Count == 0)
+        {
+            intentUI.DisplayIntent(turns[0].icon);
+            return;
+        }
+        intentUI.DisplayIntent(turns[turnNumber].icon);
     }
 }

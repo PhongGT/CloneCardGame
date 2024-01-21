@@ -75,6 +75,7 @@
     <Compile Include="Assets\Scripts\PlayerStatsBar.cs" />
     <Compile Include="Assets\Scripts\Buff.cs" />
     <Compile Include="Assets\Scripts\ListExtension.cs" />
+    <Compile Include="Assets\Scripts\IntentUI.cs" />
     <Compile Include="Assets\Scripts\RewardScreen.cs" />
     <Compile Include="Assets\Scripts\ScreenManager.cs" />
     <Compile Include="Assets\ScriptableObjects\Relic\Relic.cs" />

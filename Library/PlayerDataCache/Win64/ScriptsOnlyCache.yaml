@@ -13,6 +13,7 @@ ScriptsOnlyBuild:
     - GameManager
     - GameOver
     - HealthBarUI
+    - IntentUI
     - LoadReward
     - PTrigger
     - PlayerStatsBar
@@ -96,10 +97,8 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -185,8 +184,86 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.Toggle/ToggleEvent
   methodsToPreserve:
   - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: SelectedCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: DeSelectedCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: HoverCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: DropCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: HandleDrag
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: HandleEndDragCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardTarget
+    methodName: SelectTarget
+  - assembly: Assembly-CSharp
+    fullTypeName: CardTarget
+    methodName: DeSelectedTarget
+  - assembly: Assembly-CSharp
     fullTypeName: RewardScreen
     methodName: SelectedCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: SelectedCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: DeSelectedCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: HoverCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: DropCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: HandleDrag
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: HandleEndDragCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: SelectedCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: DeSelectedCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: HoverCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: DropCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: HandleDrag
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: HandleEndDragCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: SelectedCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: DeSelectedCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: HoverCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: DropCard
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: HandleDrag
+  - assembly: Assembly-CSharp
+    fullTypeName: CardUIManager
+    methodName: HandleEndDragCard
   - assembly: Assembly-CSharp
     fullTypeName: CardUIManager
     methodName: SelectedCard
@@ -230,41 +307,8 @@ ScriptsOnlyBuild:
     fullTypeName: CardUIManager
     methodName: HandleEndDragCard
   - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
+    fullTypeName: RewardScreen
     methodName: SelectedCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: DeSelectedCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: HoverCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: DropCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: HandleDrag
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: HandleEndDragCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: SelectedCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: DeSelectedCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: HoverCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: DropCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: HandleDrag
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: HandleEndDragCard
   - assembly: Assembly-CSharp
     fullTypeName: CardUIManager
     methodName: SelectedCard
@@ -311,9 +355,6 @@ ScriptsOnlyBuild:
     fullTypeName: CardTarget
     methodName: DeSelectedTarget
   - assembly: Assembly-CSharp
-    fullTypeName: RewardScreen
-    methodName: SelectedCard
-  - assembly: Assembly-CSharp
     fullTypeName: CardUIManager
     methodName: SelectedCard
   - assembly: Assembly-CSharp
@@ -331,48 +372,6 @@ ScriptsOnlyBuild:
   - assembly: Assembly-CSharp
     fullTypeName: CardUIManager
     methodName: HandleEndDragCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: SelectedCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: DeSelectedCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: HoverCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: DropCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: HandleDrag
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: HandleEndDragCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: SelectedCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: DeSelectedCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: HoverCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: DropCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: HandleDrag
-  - assembly: Assembly-CSharp
-    fullTypeName: CardUIManager
-    methodName: HandleEndDragCard
-  - assembly: Assembly-CSharp
-    fullTypeName: CardTarget
-    methodName: SelectTarget
-  - assembly: Assembly-CSharp
-    fullTypeName: CardTarget
-    methodName: DeSelectedTarget
   - assembly: Assembly-CSharp
     fullTypeName: RelicUI
     methodName: OnHoverRelic
@@ -392,6 +391,9 @@ ScriptsOnlyBuild:
     fullTypeName: DisplayCard
     methodName: Show
   - assembly: Assembly-CSharp
+    fullTypeName: ScreenManager
+    methodName: ExitGame
+  - assembly: Assembly-CSharp
     fullTypeName: DisplayCard
     methodName: Return
   - assembly: Assembly-CSharp
@@ -400,6 +402,9 @@ ScriptsOnlyBuild:
   - assembly: Assembly-CSharp
     fullTypeName: RewardScreen
     methodName: HandleSkipCard
+  - assembly: Assembly-CSharp
+    fullTypeName: ScreenManager
+    methodName: ShowExitPanel
   - assembly: Assembly-CSharp
     fullTypeName: ScreenManager
     methodName: StartButton
@@ -412,6 +417,9 @@ ScriptsOnlyBuild:
   - assembly: Assembly-CSharp
     fullTypeName: RewardScreen
     methodName: OnClickCardReward
+  - assembly: Assembly-CSharp
+    fullTypeName: ScreenManager
+    methodName: ExitGame
   - assembly: Unity.RenderPipelines.Core.Runtime
     fullTypeName: UnityEngine.Rendering.UI.DebugUIHandlerPanel
     methodName: OnScrollbarClicked
@@ -556,77 +564,79 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 6564}
     - Class: 114
-      Script: {instanceID: 6924}
+      Script: {instanceID: 6830}
     - Class: 114
-      Script: {instanceID: 7208}
+      Script: {instanceID: 6926}
     - Class: 114
-      Script: {instanceID: 7988}
+      Script: {instanceID: 7210}
     - Class: 114
-      Script: {instanceID: 8058}
+      Script: {instanceID: 7990}
     - Class: 114
-      Script: {instanceID: 8106}
+      Script: {instanceID: 8060}
     - Class: 114
-      Script: {instanceID: 8168}
+      Script: {instanceID: 8108}
     - Class: 114
-      Script: {instanceID: 8262}
+      Script: {instanceID: 8170}
     - Class: 114
-      Script: {instanceID: 8302}
+      Script: {instanceID: 8264}
     - Class: 114
-      Script: {instanceID: 8320}
+      Script: {instanceID: 8304}
     - Class: 114
-      Script: {instanceID: 8492}
+      Script: {instanceID: 8322}
     - Class: 114
-      Script: {instanceID: 8620}
+      Script: {instanceID: 8494}
     - Class: 114
-      Script: {instanceID: 8684}
+      Script: {instanceID: 8622}
     - Class: 114
-      Script: {instanceID: 9002}
+      Script: {instanceID: 8686}
     - Class: 114
-      Script: {instanceID: 9142}
+      Script: {instanceID: 9004}
     - Class: 114
-      Script: {instanceID: 9344}
+      Script: {instanceID: 9144}
     - Class: 114
-      Script: {instanceID: 9414}
+      Script: {instanceID: 9346}
     - Class: 114
-      Script: {instanceID: 9462}
+      Script: {instanceID: 9416}
     - Class: 114
-      Script: {instanceID: 9766}
+      Script: {instanceID: 9464}
     - Class: 114
-      Script: {instanceID: 9858}
+      Script: {instanceID: 9768}
     - Class: 114
-      Script: {instanceID: 10024}
+      Script: {instanceID: 9860}
     - Class: 114
-      Script: {instanceID: 10106}
+      Script: {instanceID: 10026}
     - Class: 114
-      Script: {instanceID: 10682}
+      Script: {instanceID: 10108}
     - Class: 114
-      Script: {instanceID: 10704}
+      Script: {instanceID: 10684}
     - Class: 114
-      Script: {instanceID: 10760}
+      Script: {instanceID: 10706}
     - Class: 114
-      Script: {instanceID: 10954}
+      Script: {instanceID: 10762}
     - Class: 114
-      Script: {instanceID: 11190}
+      Script: {instanceID: 10956}
     - Class: 114
-      Script: {instanceID: 11490}
+      Script: {instanceID: 11192}
     - Class: 114
-      Script: {instanceID: 11618}
+      Script: {instanceID: 11492}
     - Class: 114
-      Script: {instanceID: 11694}
+      Script: {instanceID: 11620}
     - Class: 114
-      Script: {instanceID: 11704}
+      Script: {instanceID: 11696}
     - Class: 114
-      Script: {instanceID: 11794}
+      Script: {instanceID: 11706}
     - Class: 114
-      Script: {instanceID: 11874}
+      Script: {instanceID: 11796}
     - Class: 114
-      Script: {instanceID: 11914}
+      Script: {instanceID: 11876}
     - Class: 114
-      Script: {instanceID: 12066}
+      Script: {instanceID: 11916}
     - Class: 114
-      Script: {instanceID: 13138}
+      Script: {instanceID: 12068}
     - Class: 114
-      Script: {instanceID: 13150}
+      Script: {instanceID: 13140}
+    - Class: 114
+      Script: {instanceID: 13152}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -988,7 +998,7 @@ ScriptsOnlyBuild:
     className: MixAndMatchSkinsExample
   - hash:
       serializedVersion: 2
-      Hash: 68393d588c9e058f303a642d55561292
+      Hash: fd820273111cfbd92439d0da8c13541d
     assemblyName: Assembly-CSharp
     namespaceName: 
     className: Enemy
@@ -1672,6 +1682,12 @@ ScriptsOnlyBuild:
     className: VFXAudioSpectrumBinder
   - hash:
       serializedVersion: 2
+      Hash: 6e134a5e9cd749c04fefd12ec7216834
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: IntentUI
+  - hash:
+      serializedVersion: 2
       Hash: b17e1111d1b078e47ae03c696c11b9a5
     assemblyName: Unity.VisualEffectGraph.Runtime
     namespaceName: UnityEngine.VFX.Utility
@@ -1894,7 +1910,7 @@ ScriptsOnlyBuild:
     className: EquipsVisualsComponentExample
   - hash:
       serializedVersion: 2
-      Hash: 57b2430f0e5f60ede649bc000ee1c91c
+      Hash: 58d75d8261a248be69d2b95777f53186
     assemblyName: Assembly-CSharp
     namespaceName: 
     className: ScreenManager
